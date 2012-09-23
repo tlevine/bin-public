@@ -45,6 +45,11 @@ case "$school" in
 #   http://www.cns.nyu.edu/help/osx/NYU_LDAP
 # bu|boston) ldap 'o=Boston University,c=US' ldap.bu.edu ;;
 
+  # Top-rated universities
+# chicago|uchicago) # https://wiki.uchicago.edu/display/idm/LDAP
+# http://web.mit.edu/kerberos/krb5-current/doc/krb_admins/conf_ldap.html
+  s|stanford) ldap 'cn=people,dc=stanford,dc=edu' ldap.stanford.edu ;;
+
   # Other
   # http://www.ithaca.edu/its/quickguides/pdfs/tbrd_emailClient.pdf
 # i|ithaca) ldap 'o=ithaca.edu,o=isp,c=us' ldap.ithaca.edu ;;
