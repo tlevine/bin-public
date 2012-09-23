@@ -8,21 +8,24 @@ name="$2"
 
 # LDAP
 ldap() {
-  ldap_name="$1"
+  b="$1"
   hostname="$2"
-# ldap_field="$3"
-  ldap_field=cn
+  ldap_field="$3"
+  [ -z "$ldap_field" ] && ldap_field=cn
   mkdir -p ~/log
-  ldapsearch -h "$hostname" -s sub -b "o=$ldap_name,c=US" -x -t -LLL "(&($ldap_field=*$name*))" 2>> ~/log/ldap-error.log
+  ldapsearch -h "$hostname" -s sub -b "$b" -x -t -LLL "(&($ldap_field=*$name*))" 2>> ~/log/ldap-error.log
 }
 
+# These require authentication
+# Brown University 
+# University of Pennsylvania http://www.upenn.edu/computing/help/doc/email/directory.html
+
 case "$school" in
-# Brown requires authentication
-  col|columbia) ldap Columbia\ University ldap.columbia.edu ;;
-  cor|cornell) ldap Cornell\ University directory.cornell.edu ;;
-# d|dartmouth) ldap Dartmouth\ College ldap.dartmouth.edu ;;
-  h|harvard) ldap Harvard\ University phonebook.harvard.edu ;;
-  p|princeton) ldap Princeton\ University ldap.princeton.edu ;;
-  y|yale) ldap yale.edu directory.yale.edu ;;
+  col|columbia) ldap 'o=Columbia University,c=US' ldap.columbia.edu ;;
+  cor|cornell) ldap 'o=Cornell University,c=US' directory.cornell.edu ;;
+# d|dartmouth) ldap 'o=DND,dc=dartmouth,dc=edu' ldap.dartmouth.edu ;;
+  h|harvard) ldap 'o=Harvard University,c=US' phonebook.harvard.edu ;;
+  p|princeton) ldap 'o=Princeton University,c=US' ldap.princeton.edu ;;
+  y|yale) ldap 'o=yale.edu' directory.yale.edu ;;
   *) echo "usage: $0 <school> <person's name>"
 esac
