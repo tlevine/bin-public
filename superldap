@@ -20,6 +20,9 @@ ldap() {
 # Brown University 
 # University of Pennsylvania http://www.upenn.edu/computing/help/doc/email/directory.html
 
+# Some nice documents
+# http://wiki.itec.suny.edu/download/attachments/7114623/SUNYCampusPersonSpecv2.6.1.pdf?version=1&modificationDate=1343134795000
+
 # Commented cases don't work.
 
 case "$school" in
@@ -31,9 +34,6 @@ case "$school" in
   p|princeton) ldap 'o=Princeton University,c=US' ldap.princeton.edu ;;
   y|yale) ldap 'o=yale.edu' directory.yale.edu ;;
 
-  # Where I know people
-# nyu) ldap 'o=New York University,st=New York,c=US' ldap.nyu.edu ;;
-#   http://www.cns.nyu.edu/help/osx/NYU_LDAP
 
   # Largest universities
   # http://en.wikipedia.org/wiki/List_of_United_States_university_campuses_by_enrollment
@@ -41,6 +41,9 @@ case "$school" in
   umn|minnesota) ldap 'o=University of Minnesota,c=US' ldap.umn.edu ;;
   ut|austin|utexas) ldap 'dc=directory,dc=utexas,dc=edu' directory.utexas.edu ;;
   gw|georgewashington) ldap 'o=gmu.edu' directory.gmu.edu ;;
+# nyu) ldap 'o=New York University,st=New York,c=US' ldap.nyu.edu ;;
+#   http://www.cns.nyu.edu/help/osx/NYU_LDAP
+# bu|boston) ldap 'o=Boston University,c=US' ldap.bu.edu ;;
 
   *) echo "usage: $0 <school> <person's name>"
 esac
