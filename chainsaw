@@ -1,0 +1,18 @@
+#!/bin/sh
+
+file_or_directory="$1"
+
+[ -z "$file_or_directory" ] && echo 'Specify a file or directory.' && return 1
+[ ! -e "$file_or_directory" ] && echo "There is no $file_or_directory" && return 1
+
+CHAINSAW=root@chainsaw.thomaslevine.com
+WEB_ROOT=/srv/chainsaw.thomaslevine.com
+
+file_or_directory_remote=$(basename "$file_or_directory")
+scp -r "$file_or_directory" $CHAINSAW:$WEB_ROOT
+ssh $CHAINSAW "chown -R www-data: $WEB_ROOT/$file_or_directory_remote"
+echo "Find $file_or_directory at"
+
+# Because of this conversion that I don't undestand// -> /
+echo -n 'http:/' 
+echo '/chainsaw.thomaslevine.com/'"$file_or_directory_remote" | sed 's/\/\//\//g'

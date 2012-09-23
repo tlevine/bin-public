@@ -1,0 +1,39 @@
+#!/bin/sh
+set -e
+
+# Take a picture with the webcam
+
+# Temporary directory
+dir=$(mktemp -d)
+file=$(date --iso-8601=seconds).png
+
+verbose=true
+shoot() {
+  filename="$1"
+  if $verbose
+    then
+    # http://wiki.oz9aec.net/index.php/Gstreamer_cheat_sheet
+    gst-launch-0.10 v4l2src num-buffers=1 ! pngenc ! filesink location=$filename
+  else
+    gst-launch-0.10 v4l2src num-buffers=1 ! pngenc ! filesink location=$filename > /dev/null 2> /dev/null
+  fi
+}
+
+if [ "$1" = '' ]
+  then
+
+  # Print the filename
+  filename=$dir/$file
+  echo $filename
+
+else
+
+  # Copy the file to the specified place
+  filename="$1"
+
+fi
+
+shoot "$filename"
+
+# Display it
+pinta $filename || eom $filename || gqview $filename || exit 0 

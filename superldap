@@ -1,0 +1,13 @@
+#!/bin/sh
+
+# LDAP
+ldap() {
+  hostname="$1"
+  ldap_name="$2"
+  ldapsearch -h "$hostname" -s sub -b "o=$ldap_name,c=US" -x -t -LLL "(&(displayName=*$name*))"
+} tr , '\n'|grep "$name" ||
+
+# Search Cornell's LDAP service
+ldap Cornell\ University directory.cornell.edu|grep @ ||
+# Search Princeton's LDAP service
+ldap Princeton\ University ldap.princeton.edu|grep @

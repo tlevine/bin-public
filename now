@@ -1,0 +1,70 @@
+#!/bin/sh
+
+# Print the current time and how far we are along the day, week and year.
+# https://twitter.com/tmcw/status/239516909450711040
+# https://gist.github.com/3472701
+# https://gist.github.com/3474085
+
+# Tom actually wants to see how much of his life is left.
+# https://twitter.com/tmcw/status/239603708973957120
+
+# Set your birthday.
+BIRTHDAY='March 30'
+BIRTHYEAR=1990
+
+# Boundaries of the week
+day_start=$(date --date=12:00am +%s)
+day_end=$(date --date='tomorrow 12:00am' +%s)
+
+# Boundaries of the day
+if [ $(date +%A) = 'Sunday' ]
+  then
+  week_start=$day_start
+  week_end=$(date --date='next sunday 12am' +%s)
+else
+  week_start=$(date --date="last Sunday 12:00am" +%s)
+  week_end=$(date --date="Sunday 12:00am" +%s)
+fi
+
+# Boundaries of the year
+year_start=$(date --date='January 1' +%s)
+year_end=$(date --date="January 1, $(( $(date +%Y) + 1 ))" +%s)
+
+# Boundaries of the expected life
+life_start=$(date --date="$BIRTHDAY, $BIRTHYEAR" +%s)
+
+# US males are expected to live to about 75.6
+# http://en.wikipedia.org/wiki/List_of_countries_by_life_expectancy
+
+# Here's some idea of the variance.
+# http://qcpages.qc.cuny.edu/~redwards/Papers/edwards-lifetables.pdf
+
+# Let's take
+#   50 as a low estimate,
+#   100 as a high estimate and
+#   75 as the expectation
+life_end_early=$(date --date="$BIRTHDAY, $(( 50 + $BIRTHYEAR))" +%s)
+life_end_expected=$(date --date="$BIRTHDAY, $(( 75 + $BIRTHYEAR))" +%s)
+life_end_late=$(date --date="$BIRTHDAY, $(( 100 + $BIRTHYEAR))" +%s)
+
+# Proportion of time passed
+prop_time() {
+  start=$1
+  end=$2
+  difference=$(( $end - $start ))
+  so_far=$(( $(date +%s) - $start ))
+  echo $(( 100 * $so_far / $difference ))
+}
+
+day_percent=$(prop_time $day_start $day_end)
+week_percent=$(prop_time $week_start $week_end)
+year_percent=$(prop_time $year_start $year_end)
+life_percent_early=$(prop_time $life_start $life_end_early)
+life_percent_expected=$(prop_time $life_start $life_end_expected)
+life_percent_late=$(prop_time $life_start $life_end_late)
+
+# Pretty printing
+printf '\033[36m%s\033[0m        Today: %02d%%          This week: %02d%%       This year: %02d%%\n' \
+  $(date +'%I:%m%p'| tr '[APM]' '[apm]') $day_percent $week_percent $year_percent
+printf           '          Life (low): %02d%%    Life (expected): %02d%%     Life (high): %02d%% \n' \
+  $life_percent_early $life_percent_expected $life_percent_late
