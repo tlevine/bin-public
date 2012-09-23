@@ -10,8 +10,7 @@ name="$2"
 ldap() {
   b="$1"
   hostname="$2"
-  ldap_field="$3"
-  [ -z "$ldap_field" ] && ldap_field=cn
+  ldap_field=cn
   mkdir -p ~/log
   ldapsearch -h "$hostname" -s sub -b "$b" -x -t -LLL "(&($ldap_field=*$name*))" 2>> ~/log/ldap-error.log
 }
@@ -49,6 +48,8 @@ case "$school" in
 # chicago|uchicago) # https://wiki.uchicago.edu/display/idm/LDAP
 # http://web.mit.edu/kerberos/krb5-current/doc/krb_admins/conf_ldap.html
   s|stanford) ldap 'cn=people,dc=stanford,dc=edu' ldap.stanford.edu ;;
+# cal|caltech) ldap 'ou=people,ou=imss,o=caltech,c=us' directory.caltech.edu ;;
+  duke) ldap 'ou=People,dc=duke,dc=edu' ldap.duke.edu ;;
 
   # Other
   # http://www.ithaca.edu/its/quickguides/pdfs/tbrd_emailClient.pdf
