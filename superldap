@@ -23,7 +23,7 @@ ldap() {
 case "$school" in
   col|columbia) ldap 'o=Columbia University,c=US' ldap.columbia.edu ;;
   cor|cornell) ldap 'o=Cornell University,c=US' directory.cornell.edu ;;
-# d|dartmouth) ldap 'o=DND,dc=dartmouth,dc=edu' ldap.dartmouth.edu ;;
+  d|dartmouth) ldap 'dc=dartmouth,dc=edu' dnd.dartmouth.edu ;;
   h|harvard) ldap 'o=Harvard University,c=US' phonebook.harvard.edu ;;
   p|princeton) ldap 'o=Princeton University,c=US' ldap.princeton.edu ;;
   y|yale) ldap 'o=yale.edu' directory.yale.edu ;;
