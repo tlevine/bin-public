@@ -1,18 +1,19 @@
 #!/bin/sh
 
-school="$1"
+school=$(echo "$1" | tr '[A-Z]' '[a-z'])
 name="$2"
 
 # LDAP
 ldap() {
-  hostname="$1"
-  ldap_name="$2"
-  ldapsearch -h "$hostname" -s sub -b "o=$ldap_name,c=US" -x -t -LLL "(&(displayName=*$name*))"
-} tr , '\n'|grep "$name" ||
+  ldap_name="$1"
+  hostname="$2"
+  mkdir -p ~/log
+  ldapsearch -h "$hostname" -s sub -b "o=$ldap_name,c=US" -x -t -LLL "(&(displayName=*$name*))" 2> ~/log/ldap-error.log
+}
 
-
-ldap Cornell\ University directory.cornell.edu|grep @ ||
-# Princeton's LDAP service
-ldap Princeton\ University ldap.princeton.edu|grep @
-# Dartmounth
-ldap Dartmouth\ College ldap.dartmouth.edu
+case "$school" in
+  d|dartmouth) ldap Dartmouth\ College ldap.dartmouth.edu ;;
+  c|cornell) ldap Cornell\ University directory.cornell.edu ;;
+  p|princeton) ldap Princeton\ University ldap.princeton.edu ;;
+  *) echo "usage: $0 <school> <person's name>"
+esac
