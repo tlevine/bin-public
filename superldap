@@ -39,6 +39,8 @@ case "$school" in
   # http://en.wikipedia.org/wiki/List_of_United_States_university_campuses_by_enrollment
 # osu|ohio) ldap 'o=OSU Directory,ou=People,dc=osu,dc=edu' directory.service.ohio-state.edu ;;
   umn|minnesota) ldap 'o=University of Minnesota,c=US' ldap.umn.edu ;;
+  ut|austin|utexas) ldap 'dc=directory,dc=utexas,dc=edu' directory.utexas.edu ;;
+  gw|georgewashington) ldap 'o=gmu.edu' directory.gmu.edu ;;
 
   *) echo "usage: $0 <school> <person's name>"
 esac
