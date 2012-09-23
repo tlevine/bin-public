@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# Search university LDAP directories.
+# I started with Ivy League because it's small.
+
 school=$(echo "$1" | tr '[A-Z]' '[a-z'])
 name="$2"
 
@@ -7,13 +10,19 @@ name="$2"
 ldap() {
   ldap_name="$1"
   hostname="$2"
+# ldap_field="$3"
+  ldap_field=cn
   mkdir -p ~/log
-  ldapsearch -h "$hostname" -s sub -b "o=$ldap_name,c=US" -x -t -LLL "(&(displayName=*$name*))" 2> ~/log/ldap-error.log
+  ldapsearch -h "$hostname" -s sub -b "o=$ldap_name,c=US" -x -t -LLL "(&($ldap_field=*$name*))" 2>> ~/log/ldap-error.log
 }
 
 case "$school" in
-  d|dartmouth) ldap Dartmouth\ College ldap.dartmouth.edu ;;
-  c|cornell) ldap Cornell\ University directory.cornell.edu ;;
+# Brown requires authentication
+  col|columbia) ldap Columbia\ University ldap.columbia.edu ;;
+  cor|cornell) ldap Cornell\ University directory.cornell.edu ;;
+# d|dartmouth) ldap Dartmouth\ College ldap.dartmouth.edu ;;
+  h|harvard) ldap Harvard\ University phonebook.harvard.edu ;;
   p|princeton) ldap Princeton\ University ldap.princeton.edu ;;
+  y|yale) ldap yale.edu directory.yale.edu ;;
   *) echo "usage: $0 <school> <person's name>"
 esac
