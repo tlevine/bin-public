@@ -1,5 +1,5 @@
 #!/bin/sh
-set -e
+# set -e
 
 # Settings
 . ~/.boxrc
@@ -8,6 +8,6 @@ boxname="$1"
 # Create and add key
 curl --data apikey="$apikey" http://box.scraperwiki.com/scraperwiki/"$boxname"
 curl --data-urlencode sshkey@$(printf ~/.ssh/id_[rd]sa.pub) --data apikey="$apikey" http://box.scraperwiki.com/scraperwiki/"$boxname"/sshkeys
-ssh scraperwiki/${boxname}@box.scraperwiki.com "printf '[receive]\n\tdenyCurrentBranch = ignore\n' >> ~/.git/config"
+ssh scraperwiki.${boxname}@box.scraperwiki.com "printf '[receive]\n\tdenyCurrentBranch = ignore\n' >> ~/.git/config"
 echo Run this.
-echo "git remote add origin 'scraperwiki/${boxname}@box.scraperwiki.com:.git'"
+echo "git clone 'scraperwiki.${boxname}@box.scraperwiki.com:.git' ${boxname}"
