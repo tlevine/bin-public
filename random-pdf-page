@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# Count how many pages are in the passed PDF then
+# select a number randomly. This is useful for
+# creating fixtures when doing things with PDFs.
+
+# For storing pdfinfo output
+tmp=$(mktemp)
+
+# Check if it's a pdf
+if
+  pdfinfo "$1" 1> $tmp 2> /dev/null | grep pages
+then
+  # Select a random page number
+  sed -in '/Pages:/ s/[^0-9]//gp' $tmp
+  echo $((($RANDOM % $(cat $tmp)) + 1))
+else
+  # Not a pdf
+  echo Not a pdf && exit 1
+fi
