@@ -9,12 +9,18 @@ tmp=$(mktemp)
 
 # Check if it's a pdf
 if
-  pdfinfo "$1" 1> $tmp 2> /dev/null | grep pages
+  pdfinfo "$1" 1> $tmp 2> /dev/null
+  grep 'Pages:' $tmp > /dev/null
 then
   # Select a random page number
-  sed -in '/Pages:/ s/[^0-9]//gp' $tmp
-  echo $((($RANDOM % $(cat $tmp)) + 1))
+  npages=$(sed -n '/Pages:/ s/[^0-9]//gp' $tmp)
+  echo $((($RANDOM % $npages) + 1))
+  exitcode=0
 else
   # Not a pdf
-  echo Not a pdf && exit 1
+  echo Not a pdf
+  exitcode=1
 fi
+
+rm $tmp
+exit $exitcode
