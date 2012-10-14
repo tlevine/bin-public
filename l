@@ -28,7 +28,7 @@ done
 dictionary="$0"
 
 # Use a block size such that we'll skip the code part.
-block_size=1058
+block_size=1076
 
 # How many blocks are there?
 nblocks=$(du -B "$block_size" "$dictionary" | cut -d\  -f1 | sed 's/[^0-9]//g')
@@ -37,15 +37,13 @@ nblocks=$(du -B "$block_size" "$dictionary" | cut -d\  -f1 | sed 's/[^0-9]//g')
 random_block=$(( $RANDOM % $nblocks + 1))
 
 # Seek to it and select the flags from it.
-flags=$(dd if=$dictionary ibs=$block_size count=1 skip=$random_block 2> /dev/null | sort -R | grep -m1 $_grep_v d  )
+flags=$(dd if=$dictionary ibs=$block_size count=1 skip=$random_block 2> /dev/null | sed -e 1d -e '$d' | sort -R | grep -m1 $_grep_v d  )
 
 echo ls --color -$flags
 ls --color -$flags
 exit
 
 # Dictionary follows.
-
-
 aardvark
 aaron
 aback
