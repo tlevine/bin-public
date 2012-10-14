@@ -1,0 +1,3 @@
+[submodule ".spot"]
+	path = .spot
+	url = git@github.com:tlevine/spot.git
