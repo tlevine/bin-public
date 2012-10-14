@@ -10,13 +10,13 @@ _help() {
 }
 
 # Include a d or not based on whether a -d parameter was passed.
-grep_flags='-v d'
+_grep_v='-v'
 
 # Parameters
 while [ $# -gt 0 ]
 do
     case "$1" in
-        -d) grep_flags=d;;
+        -d) _grep_v= ;;
         -h) _help && exit 0;;
         -*) _help 1>&2 $USAGE && exit 1;;
         *)  break;;
@@ -28,20 +28,18 @@ done
 dictionary="$0"
 
 # Use a block size such that we'll skip the code part.
-block_size=700
+block_size=1058
 
 # How many blocks are there?
 nblocks=$(du -B "$block_size" "$dictionary" | cut -d\  -f1 | sed 's/[^0-9]//g')
 
 # Choose a random one
-random_block=$(( $RANDOM % $nblocks ))
+random_block=$(( $RANDOM % $nblocks + 1))
 
 # Seek to it and select the flags from it.
-dd if=$dictionary ibs=$block_size count=1 skip=$random_block | sort -R | grep -m1 "$grep_flags"
+flags=$(dd if=$dictionary ibs=$block_size count=1 skip=$random_block 2> /dev/null | sort -R | grep -m1 $_grep_v d  )
+
 echo ls --color -$flags
-
-exit
-
 ls --color -$flags
 exit
 
