@@ -1,18 +1,20 @@
 #!/bin/bash
 
 if [ ! -d "${HOME}/.dotfiles/private" ] || [ ! -d "${HOME}/.dotfiles/public" ] ; then
-  echo Dotfiles must be stored in the ~/.dotfiles/{private,public} directories.
+  echo Dotfiles must be stored in the ${HOME}/.dotfiles/{private,public} directories.
   exit 1
 fi
 
-for dotfiles_dir in ~/.dotfiles/private ~/.dotfiles/public; do
+for dotfiles_dir in "${HOME}/.dotfiles/private" "${HOME}/.dotfiles/public"; do
   (
     cd "${dotfiles_dir}"
     for dotfile in .*; do
-      [ "${dotfile}" = '.' ] && continue
       [ "${dotfile}" = '..' ] && continue
+      [ "${dotfile}" = '.' ] && continue
       [ "${dotfile}" = '.git' ] && continue
-      ln -s "${dotfiles_dir}/${dotfile}" ~/"${dotfile}"
+      test -h "${HOME}/${dotfile}" &&  unlink "${HOME}/${dotfile}"
+      test -d "${HOME}/${dotfile}" && echo "${HOME}/${dotfile} is a directory, so I'm not linking it." 1>&2 && continue
+      ln -s "${dotfiles_dir}/${dotfile}" ${HOME}/"${dotfile}"
     done
   )
 done
