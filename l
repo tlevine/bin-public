@@ -13264,7 +13264,7 @@ vulva
 xhosa
 xhosas
 xmas
-' | sort -R | head -n1)
+' | sort -R | grep -v d -m1 )
 echo ls --color -$flags
 ls --color -$flags
 
