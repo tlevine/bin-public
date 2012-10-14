@@ -25,12 +25,17 @@ do
 done
 
 dictionary="$0"
+block_size=700
+du -B "$block_size" "$dictionary"
+exit
 
 
-dd if=$dictionary | sort -R | grep -v d -m1 )
+dd if=$dictionary ibs=332 count=1 skip=$random_block | sort -R | grep -m1 "$grep_flags"
 echo ls --color -$flags
 ls --color -$flags
+exit
 
+# Dictionary follows.
 
 
 aardvark
