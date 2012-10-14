@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # Run ls with an interesting series of commands.
 # To optimize its performance, commands are read from this file with dd.
 
@@ -24,14 +24,24 @@ do
     shift
 done
 
+# Read the dictionary from the present file.
 dictionary="$0"
+
+# Use a block size such that we'll skip the code part.
 block_size=700
-du -B "$block_size" "$dictionary"
+
+# How many blocks are there?
+nblocks=$(du -B "$block_size" "$dictionary" | cut -d\  -f1 | sed 's/[^0-9]//g')
+
+# Choose a random one
+random_block=$(( $RANDOM % $nblocks ))
+
+# Seek to it and select the flags from it.
+dd if=$dictionary ibs=$block_size count=1 skip=$random_block | sort -R | grep -m1 "$grep_flags"
+echo ls --color -$flags
+
 exit
 
-
-dd if=$dictionary ibs=332 count=1 skip=$random_block | sort -R | grep -m1 "$grep_flags"
-echo ls --color -$flags
 ls --color -$flags
 exit
 
