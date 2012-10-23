@@ -39,8 +39,12 @@ random_block=$(( $RANDOM % $nblocks + 1))
 # Seek to it and select the flags from it.
 flags=$(dd if=$dictionary ibs=$block_size count=1 skip=$random_block 2> /dev/null | sed -e 1d -e '$d' | sort -R | grep -m1 $_grep_v d  )
 
-echo ls --color ${flags+-}$flags
-ls --color -$flags
+# Clear the screen because I always want this.
+clear
+
+# Go.
+echo ls --color ${flags+-}$flags $@
+ls --color -$flags $@
 exit
 
 # Dictionary follows.
