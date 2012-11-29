@@ -11,11 +11,28 @@ for dotfiles_dir in "${HOME}/.dotfiles/private" "${HOME}/.dotfiles/public"; do
     for dotfile in .*; do
       [ "${dotfile}" = '..' ] && continue
       [ "${dotfile}" = '.' ] && continue
+      [ "${dotfile}" = '.config' ] && continue
       [ "${dotfile}" = '.git' ] && continue
       test -h "${HOME}/${dotfile}" &&  unlink "${HOME}/${dotfile}"
       test -d "${HOME}/${dotfile}" && echo "${HOME}/${dotfile} is a directory, so I'm not linking it." 1>&2 && continue
       ln -s "${dotfiles_dir}/${dotfile}" ${HOME}/"${dotfile}"
     done
+  )
+  
+  mkdir -p ~/.config
+  (
+    mkdir -p "${dotfiles_dir}/.config"
+    cd "${dotfiles_dir}/.config"
+    for thing in * .*; do
+      [ "${thing}" = '..' ] && continue
+      [ "${thing}" = '.' ] && continue
+      [ "${thing}" = '*' ] && continue
+      echo $thing
+      test -h "${HOME}/.config/${thing}" &&  unlink "${HOME}/.config/${thing}"
+      test -d "${HOME}/.config/${thing}" && echo "${HOME}/.config/${thing} is a directory, so I'm not linking it." 1>&2 && continue
+      ln -s "${dotfiles_dir}/.config/${thing}" "${HOME}/.config/${thing}"
+    done
+      
   )
 done
 touch ~/.profile-local
