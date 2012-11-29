@@ -8,8 +8,8 @@
 boxname="$1"
 
 # Create and add key
-curl --data apikey="$apikey" http://ds.scraperwiki.com/scraperwiki/"$boxname"
-curl --data-urlencode sshkey@$(printf ~/.ssh/id_[rd]sa.pub) --data apikey="$apikey" http://ds.scraperwiki.com/scraperwiki/"$boxname"/sshkeys
-ssh scraperwiki.${boxname}@box.scraperwiki.com "printf '[receive]\n\tdenyCurrentBranch = ignore\n' >> ~/.git/config"
+curl --data apikey="$apikey" http://box.scraperwiki.com/tlevine/"$boxname"
+curl --data-urlencode sshkey@$(printf ~/.ssh/id_[rd]sa.pub) --data apikey="$apikey" http://box.scraperwiki.com/tlevine/"$boxname"/sshkeys
+ssh tlevine.${boxname}@box.scraperwiki.com "printf '[receive]\n\tdenyCurrentBranch = ignore\n' >> ~/.git/config"
 echo Run this.
-echo "git clone 'scraperwiki.${boxname}@box.scraperwiki.com:.git' ${boxname}"
+echo "git clone 'tlevine.${boxname}@box.scraperwiki.com:.git' ${boxname}"
