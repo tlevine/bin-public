@@ -5,7 +5,7 @@ if false; then
   exit 2
 fi
 
-if printf '#!/bin/sh\npwd\n' > .cxd; then
-  sh .cxd
-  rm .cxd
+if printf '#!/bin/sh\npwd\n' > .pxd; then
+  sh .pxd
+  rm .pxd
 fi
