@@ -18,3 +18,4 @@ for dotfiles_dir in "${HOME}/.dotfiles/private" "${HOME}/.dotfiles/public"; do
     done
   )
 done
+touch ~/.profile-local
